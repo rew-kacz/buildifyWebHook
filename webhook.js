@@ -5,11 +5,10 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = 3000;
 
-// Middleware to parse JSON body
 app.use(bodyParser.json());
 
 // Email configuration
-const emailAddress = process.argv[2]; // Get email address from command line arguments
+const emailAddress = process.argv[2]; // Inbound messages are sent to this address.
 if (!emailAddress) {
     console.error('Please provide an email address as a command line argument.');
     process.exit(1);
@@ -30,7 +29,7 @@ app.post('/webhook', (req, res) => {
     const mailOptions = {
         from: 'your-email@gmail.com',
         to: emailAddress,
-        subject: 'Webhook Data',
+        subject: 'Webhook Data -- ' + new Date().toLocaleString(),
         text: JSON.stringify(req.body, null, 2)
     };
 
